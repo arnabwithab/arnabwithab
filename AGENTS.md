@@ -180,6 +180,37 @@ Projects target free-tier hosting wherever possible. The default deployment patt
 
 Python (FastAPI) is the default backend. However, if the backend's entire role is HTTP plumbing — routing requests, calling Hugging Face Spaces APIs, serving responses — with no Python-specific libraries (numpy, pandas, transformers, etc.) in `core/`, the agent **must flag** that the project is a candidate for a Go rewrite. Go binaries are ~10 MB vs ~200 MB+ Python images and start in milliseconds, making them far cheaper to host on free-tier services.
 
+## Multi-Agent Workflow
+
+When `docs/features.json` contains 3 or more independent features (different modules, no shared state), the Build agent parallelizes implementation using subagents.
+
+### Flow
+
+1. **Plan**: Identify independent features from `features.json`. Features touching the same files are dependent and batched sequentially.
+2. **Build**: Spawn up to 3 builder subagents at a time via the Task tool. When one completes, spawn the next pending feature.
+3. **E2E** (if applicable): When all builders complete, spawn the playwright-tester to run browser tests.
+4. **Review**: Spawn the ponytail-reviewer to audit the combined diff for over-engineering. Ponytail only works on the full picture — review the combined diff, not per-feature.
+5. **Verify**: Run `make test && make style`.
+
+If fewer than 3 independent features exist, the Build agent implements them directly without subagents.
+
+### Subagents
+
+Subagents are defined in `~/.config/opencode/agents/` and available globally. All three use `model: opencode-go/deepseek-v4-flash`.
+
+| Agent | File | Purpose | Permissions |
+|-------|------|---------|-------------|
+| builder | `builder.md` | TDD one feature, writes tests then implementation | edit: allow, bash: allow, task: { \*: deny, playwright-tester: allow } |
+| playwright-tester | `playwright-tester.md` | E2E browser tests via playwright-cli | edit: deny, bash: allow |
+| ponytail-reviewer | `ponytail-reviewer.md` | Bloat/over-engineering audit on combined diff | edit: deny, bash: allow |
+
+### Edge cases
+
+- **Dependent features** (same files): Sequenced within the same builder subagent.
+- **Ponytail finds issues**: Main agent decides fix-now vs file-as-debt.
+- **No E2E tests defined**: Playwright-tester step is skipped.
+- **E2E failure during builder**: A builder can spawn playwright-tester mid-flight to validate its own feature.
+
 ## Agent Guidelines
 - Always run `make style` before considering any code done
 - Always use snake_case for Python files/variables/functions/DB columns; kebab-case for frontend files
@@ -195,6 +226,7 @@ Python (FastAPI) is the default backend. However, if the backend's entire role i
 - Any new setup/run/test/style/build step must be added as a Makefile target, not just documented in prose
 - If the backend is purely HTTP plumbing with no Python-specific dependencies in `core/`, flag Go-portability during the design phase
 - If something feels out of scope, flag it rather than silently doing it
+- If >=3 independent features exist in docs/features.json, spawn builder subagents (max 3 concurrent) per the Multi-Agent Workflow
 
 `docs/features.json`
 
