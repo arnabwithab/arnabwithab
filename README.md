@@ -3,7 +3,7 @@
 
 </h1>
 
-<p align="center">AI Engineer | LLMOps Specialist | CSE @ SNIoE'27 </p>
+<p align="center">AI Infra Specialist | CSE @ SNIoE'27 </p>
 
 <div align="center">
 
@@ -13,11 +13,11 @@
 
 </div>
 
-I'm a CSE undergrad at Shiv Nadar University, and I work as an AI engineer, specializing in enterprise AI and finetuning anything i get my hands on.
+I'm a CSE undergrad at Shiv Nadar University, and I work as an AI engineer, finetuning anything i get my hands on.
 
 Some of my work experience includes
-- 8x-ing the throughput of a Vision LLM pipeline
-- building AI graph-RAG agents
-- multimodal machine learning pipelines for critical, security focused military usage
-- high-throughput SQL generation engines for healthcare.
+- 8x-ing the throughput of a Vision LLM pipeline at Deeplure
+- cutting PII redaction latency by 92% at Fidelity International
+- finetuned and deployed 5+ customer specific finetuned models
+- shipped AI gateway guardrail processing 15k+ documents per month
 
