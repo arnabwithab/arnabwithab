@@ -18,6 +18,7 @@ If the problem statement document is not provided, request the user for informat
 - API routes are thin — logic lives in core/
 - Explicit over clever — readable code beats smart code
 - If it isn't runnable via `make`, it isn't done
+- after every feature run finishes, push to git
 
 ## Tech Stack
 - Frontend: React + Vite + TypeScript
