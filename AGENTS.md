@@ -1,9 +1,9 @@
-# AGENT.md
+# AGENTS.md
 
-THIS IS A TEMPLATE FOR AGENT.md. If you are an AI Agent, refer to `docs/problem.md` and follow the next steps.
+THIS IS A TEMPLATE FOR AGENTS.md. If you are an AI Agent, refer to `docs/problem.md` and follow the next steps.
 - Discuss with the user to build a design document at `docs/design.md`.
 - Based on `docs/design.md`, build a feature list tracker at `docs/features.json`.
-- Update AGENT.md with the relevant information.
+- Update AGENTS.md with the relevant information.
 - Remove this section.
 
 If the problem statement document is not provided, request the user for information on what is to be done.
