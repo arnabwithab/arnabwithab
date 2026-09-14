@@ -3,7 +3,7 @@
 
 </h1>
 
-<p align="center">AI Infra Specialist | CSE @ SNIoE'27 </p>
+<p align="center"> Machine Learning Engineer | CSE @ SNIoE'27 </p>
 
 <div align="center">
 
